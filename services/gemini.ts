@@ -52,7 +52,7 @@ export const getCuratorResponse = async (history: ChatMessage[], newMessage: str
 
   try {
     const chat = ai.chats.create({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
       config: {
         systemInstruction: `
           Eres el asistente virtual oficial (Curador Virtual) del portafolio de "Pedro Antonio Vejarano Mezarina", artísticamente conocido como "Mezarv".
