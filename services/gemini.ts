@@ -14,16 +14,29 @@ export interface ChatMessage {
 
 // Initialize AI client lazily to prevent app crash if process is undefined
 let ai: GoogleGenAI | null = null;
+let apiKey = "";
 
 try {
-  // Check if process exists before accessing it to avoid ReferenceError
-  // in environments where it is not polyfilled.
-  if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  // 1. Intentar obtener de las variables estándar de Vite en el cliente
+  if (import.meta.env && import.meta.env.VITE_GEMINI_API_KEY) {
+    apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   }
-} catch (error) {
-  // Silently fail if environment access fails, we will handle missing AI later
-  console.warn("Could not initialize Gemini Client:", error);
+} catch (e) {}
+
+if (!apiKey) {
+  try {
+    // 2. Intentar obtener del define de compilación de Vite
+    const key = process.env.API_KEY;
+    if (key) apiKey = key;
+  } catch (e) {}
+}
+
+if (apiKey) {
+  try {
+    ai = new GoogleGenAI({ apiKey });
+  } catch (error) {
+    console.warn("Could not initialize Gemini Client:", error);
+  }
 }
 
 export const getCuratorResponse = async (history: ChatMessage[], newMessage: string): Promise<string> => {
