@@ -42,14 +42,14 @@ const AICurator: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end pointer-events-none">
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="pointer-events-auto bg-zinc-900/95 backdrop-blur-xl border border-zinc-700 w-[350px] md:w-[400px] h-[500px] rounded-2xl shadow-2xl overflow-hidden flex flex-col mb-4"
+            className="pointer-events-auto bg-zinc-900/95 backdrop-blur-xl border border-zinc-700 w-[calc(100vw-2rem)] md:w-[400px] h-[70vh] md:h-[500px] rounded-2xl shadow-2xl overflow-hidden flex flex-col mb-4"
           >
             {/* Header */}
             <div className="p-4 border-b border-zinc-700 bg-black/40 flex justify-between items-center">

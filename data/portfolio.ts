@@ -514,3 +514,16 @@ export const certificates: Certificate[] = [
     icon: 'star'
   }
 ];
+
+// ==========================================
+// 5. CONFIGURACIÓN DE CONTACTO Y REDES SOCIALES
+// ==========================================
+// Cambia los valores aquí y se actualizarán automáticamente en toda la web.
+export const contactInfo = {
+  whatsApp: "https://wa.me/51918474169", // WhatsApp de Mezarv
+  instagram: "https://www.instagram.com/mezarv65/", // Instagram de Mezarv
+  tiktok: "https://www.tiktok.com/@www.tiktok.commezarv", // TikTok de Mezarv
+  facebook: "https://www.facebook.com/mezarv.art", // Enlace de Facebook
+  email: "contacto@mezarv.art", // Correo electrónico
+  phoneCall: "tel:+51918474169" // Teléfono para llamadas de Mezarv
+};

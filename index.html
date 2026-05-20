@@ -20,53 +20,8 @@
     <!-- CRITICAL: Preload Hero Image for instant LCP -->
     <link rel="preload" as="image" href="https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2187&auto=format&fit=crop" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              serif: ['Cinzel', 'serif'],
-            },
-            colors: {
-              'void': '#09090b',
-              'gold': '#d4af37',
-              'glass': 'rgba(255, 255, 255, 0.05)',
-            }
-          }
-        }
-      }
-    </script>
-    <style>
-      body {
-        background-color: #09090b;
-        color: #e4e4e7;
-        scroll-behavior: smooth;
-      }
-      .hide-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .hide-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.25"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+  </head>
   <body>
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>

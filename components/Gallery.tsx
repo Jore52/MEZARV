@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Maximize2, Search, ChevronDown } from 'lucide-react';
-import { galleryItems } from '../data/portfolio';
+import { galleryItems, contactInfo } from '../data/portfolio';
 
 // Utility to use Imgur's "Large Thumbnail" (suffix 'l') for grid views to save bandwidth
 // Original: https://i.imgur.com/xyz.jpg -> Optimized: https://i.imgur.com/xyzl.jpg
@@ -152,7 +152,7 @@ const Gallery: React.FC = () => {
                   <img 
                     src={getOptimizedImageUrl(art.imageUrl)} 
                     alt={art.title} 
-                    className="w-full h-auto min-h-[300px] object-cover transform transition-transform duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0 grayscale relative z-10"
+                    className="w-full h-auto min-h-[300px] object-cover transform transition-transform duration-700 ease-out group-hover:scale-105 relative z-10"
                     loading="lazy"
                     decoding="async"
                     onError={(e) => {
@@ -245,7 +245,7 @@ const Gallery: React.FC = () => {
                   
                   {/* Button at the bottom */}
                   <a 
-                    href="https://wa.me/"
+                    href={contactInfo.whatsApp}
                     target="_blank"
                     rel="noreferrer" 
                     className="w-full group bg-white text-black py-3 md:py-4 px-6 uppercase tracking-widest text-[10px] md:text-xs font-bold hover:bg-gold transition-all duration-300 flex items-center justify-center gap-2 rounded-sm"

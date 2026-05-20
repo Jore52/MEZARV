@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Ticket, Palette, ArrowRight, MapPin, Play, Image as ImageIcon, X } from 'lucide-react';
-import { workshopItems, studentGallery, culturalGallery } from '../data/portfolio';
+import { workshopItems, studentGallery, culturalGallery, contactInfo } from '../data/portfolio';
 import { ProcessItem } from '../types';
 
 // Imgur Optimization Helper
@@ -121,7 +121,7 @@ const Workshops: React.FC = () => {
                   <img 
                     src={getOptimizedImageUrl(event.image)} 
                     alt={event.title} 
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
                   />
                   <div className="absolute top-4 right-4 z-20">
@@ -160,7 +160,7 @@ const Workshops: React.FC = () => {
                   </p>
 
                   <a 
-                    href="https://wa.me/"
+                    href={event.status === 'Abierto' ? contactInfo.whatsApp : undefined}
                     target="_blank" 
                     rel="noreferrer"
                     className={`flex items-center justify-between w-full py-3 px-4 text-xs font-bold uppercase tracking-widest transition-all duration-300 mt-auto ${

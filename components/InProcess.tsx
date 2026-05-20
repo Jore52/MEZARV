@@ -157,11 +157,11 @@ const InProcess: React.FC = () => {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               viewport={{ once: true }}
               onClick={() => handleItemClick(item)}
-              className="snap-center shrink-0 relative group"
-              style={{ 
-                width: item.isVertical ? '300px' : '450px',
-                height: '500px'
-              }}
+              className={`snap-center shrink-0 relative group h-[500px] ${
+                item.isVertical 
+                  ? 'w-[280px] md:w-[300px]' 
+                  : 'w-[88vw] max-w-[450px] md:w-[450px]'
+              }`}
             >
               {/* Card Container */}
               <div className="w-full h-full bg-zinc-900 border border-zinc-800 relative overflow-hidden transition-all duration-500 group-hover:border-gold/30 group-hover:shadow-[0_0_30px_rgba(0,0,0,0.8)] rounded-sm pointer-events-none md:pointer-events-auto">
@@ -187,7 +187,7 @@ const InProcess: React.FC = () => {
                     <img 
                       src={item.url} 
                       alt={item.title}
-                      className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-700 filter grayscale group-hover:grayscale-0"
+                      className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-700"
                       draggable={false}
                     />
                   )}
@@ -259,8 +259,8 @@ const InProcess: React.FC = () => {
                exit={{ scale: 0.95, opacity: 0 }}
                className={`relative bg-zinc-900 overflow-hidden shadow-2xl border border-zinc-800 flex flex-col
                  ${activeItem.isVertical 
-                    ? 'h-[85vh] aspect-[9/16] max-w-sm rounded-lg' 
-                    : 'w-full max-w-5xl aspect-video rounded-lg'
+                    ? 'h-[85vh] aspect-[9/16] max-w-[90vw] md:max-w-sm rounded-lg' 
+                    : 'w-full max-w-[95vw] md:max-w-5xl aspect-video rounded-lg'
                  }`}
              >
                 <div className="absolute top-0 left-0 right-0 p-4 z-20 flex justify-end">

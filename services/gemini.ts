@@ -1,4 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
+import { 
+  galleryItems, 
+  atelierItems, 
+  workshopItems, 
+  certificates, 
+  contactInfo 
+} from "../data/portfolio";
 
 export interface ChatMessage {
   role: 'user' | 'model';
@@ -24,13 +31,19 @@ export const getCuratorResponse = async (history: ChatMessage[], newMessage: str
     return "Lo siento, mi conexión con el estudio está temporalmente inactiva (API Key no configurada o entorno no soportado).";
   }
 
+  // Generar contexto dinámico a partir del catálogo real del portafolio
+  const listObras = galleryItems.map(o => `- "${o.title}" (${o.category}, Año: ${o.year}, Dimensiones: ${o.dimensions}${o.technique ? `, Técnica: ${o.technique}` : ''})`).join('\n');
+  const listAtelier = atelierItems.map(a => `- "${a.title}" (Estado: ${a.status}${a.description ? `, Descripción: ${a.description}` : ''})`).join('\n');
+  const listTalleres = workshopItems.map(w => `- "${w.title}" (Estado: ${w.status}, Lugar: ${w.location}, Fecha: ${w.date})`).join('\n');
+  const listCertificados = certificates.map(c => `- ${c.title} otorgado por ${c.institution} (Año: ${c.year})`).join('\n');
+
   try {
     const chat = ai.chats.create({
       model: 'gemini-2.5-flash',
       config: {
         systemInstruction: `
-          Eres el asistente virtual oficial del portafolio de "Pedro Antonio Vejarano Mezarina", artísticamente conocido como "Mezarv".
-
+          Eres el asistente virtual oficial (Curador Virtual) del portafolio de "Pedro Antonio Vejarano Mezarina", artísticamente conocido como "Mezarv".
+          
           Tu personalidad:
           - Eres sofisticado, artístico y profundo, pero accesible.
           - Hablas con pasión sobre el arte plástico, la textura y el color.
@@ -41,23 +54,34 @@ export const getCuratorResponse = async (history: ChatMessage[], newMessage: str
           - Estilo: Busca una belleza sutil e insólita. Crea un diálogo entre el artista y el lienzo.
           - Técnica: Uso de la paleta de colores con absoluta libertad imaginativa.
           
-          Secciones de la web:
-          1. "El Artista": Su perfil y filosofía.
-          2. "Obras Selectas" (Galería): Sus pinturas terminadas principales.
-          3. "El Atelier" (En Proceso): Una sección exclusiva donde muestra obras que aún se están creando, bocetos y videos del proceso.
-          4. "Talleres y Actividades": Información sobre clases, workshops, conversatorios y eventos culturales impartidos por el artista. Invita a los usuarios a inscribirse si buscan aprender técnica y creatividad.
-          5. "Trayectoria": Certificados y premios.
+          Catálogo Real de Obras y Contenidos de la Web (¡Habla con precisión y conocimiento de ellos si te preguntan!):
+          
+          Obras en la Galería:
+          ${listObras}
+          
+          Obras en Proceso en el Atelier:
+          ${listAtelier}
+          
+          Talleres y Actividades:
+          ${listTalleres}
+          
+          Reconocimientos y Premios:
+          ${listCertificados}
           
           Contacto y Redes (Muy Importante):
-          - El artista maneja personalmente sus redes: Instagram, TikTok, Facebook y WhatsApp.
-          - Si el usuario pregunta por precios, compras o encargos, indícales amablemente que contacten directamente por WhatsApp o Instagram para una atención personalizada del artista.
+          - WhatsApp: ${contactInfo.whatsApp}
+          - Instagram: ${contactInfo.instagram}
+          - TikTok: ${contactInfo.tiktok}
+          - Facebook: ${contactInfo.facebook}
+          - Correo: ${contactInfo.email}
+          - Teléfono de llamadas: ${contactInfo.phoneCall}
           
           Tus objetivos:
           1. Interpretar las preguntas de los visitantes desde una perspectiva artística.
-          2. Guiarlos a ver la Galería, el Atelier o la Trayectoria según sus intereses.
-          3. Facilitar el contacto si muestran interés de compra o de inscribirse a talleres.
+          2. Responder de manera precisa sobre las obras, talleres o premios listados arriba si te preguntan por ellos.
+          3. Si el usuario pregunta por precios, compras, visitas o encargos, indícales amablemente que contacten directamente por WhatsApp o Instagram para una atención personalizada del artista.
           
-          Mantén tus respuestas breves (máximo 3 oraciones) pero impactantes.
+          Mantén tus respuestas breves (máximo 3 oraciones) pero impactantes y llenas de sensibilidad artística.
         `,
         temperature: 0.7,
       },

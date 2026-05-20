@@ -6,6 +6,8 @@ import Certificates from './components/Certificates';
 import Profile from './components/Profile';
 import InProcess from './components/InProcess';
 import Workshops from './components/Workshops';
+import AICurator from './components/AICurator';
+import { contactInfo } from './data/portfolio';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -240,7 +242,7 @@ const App: React.FC = () => {
                           </div>
                           <div>
                               <span className="block text-xs uppercase text-zinc-600 tracking-wider">Email</span>
-                              <span className="text-white">contacto@mezarv.art</span>
+                              <a href={`mailto:${contactInfo.email}`} className="text-white hover:text-gold transition-colors">{contactInfo.email}</a>
                           </div>
                       </div>
                       
@@ -256,7 +258,7 @@ const App: React.FC = () => {
                   </div>
 
                   <a 
-                    href="https://wa.me/"
+                    href={contactInfo.whatsApp}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-3 bg-white text-black px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-gold transition-colors duration-300 w-full md:w-auto justify-center rounded-sm"
@@ -273,19 +275,19 @@ const App: React.FC = () => {
                <div className="absolute inset-0 bg-gradient-to-br from-black/80 to-transparent"></div>
                
                <div className="relative z-10 grid grid-cols-2 gap-4 w-full max-w-md">
-                   <a href="#" className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
+                   <a href={contactInfo.instagram} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
                        <Instagram size={32} className="text-zinc-500 group-hover:text-[#E1306C] mb-4 transition-colors" />
                        <span className="text-xs uppercase tracking-widest text-zinc-400 group-hover:text-white">Instagram</span>
                    </a>
-                   <a href="#" className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
+                   <a href={contactInfo.tiktok} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
                        <Video size={32} className="text-zinc-500 group-hover:text-white mb-4 transition-colors" />
                        <span className="text-xs uppercase tracking-widest text-zinc-400 group-hover:text-white">TikTok</span>
                    </a>
-                   <a href="#" className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
+                   <a href={contactInfo.facebook} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
                        <Facebook size={32} className="text-zinc-500 group-hover:text-[#1877F2] mb-4 transition-colors" />
                        <span className="text-xs uppercase tracking-widest text-zinc-400 group-hover:text-white">Facebook</span>
                    </a>
-                   <a href="#" className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
+                   <a href={contactInfo.phoneCall} className="flex flex-col items-center justify-center p-8 border border-zinc-800 hover:border-gold/30 hover:bg-zinc-800/50 transition-all duration-300 group rounded-sm aspect-square">
                        <Phone size={32} className="text-zinc-500 group-hover:text-green-500 mb-4 transition-colors" />
                        <span className="text-xs uppercase tracking-widest text-zinc-400 group-hover:text-white">Llamar</span>
                    </a>
@@ -299,6 +301,9 @@ const App: React.FC = () => {
            <p>Todos los derechos reservados.</p>
         </div>
       </section>
+
+      {/* Asistente Virtual / Curador de IA */}
+      <AICurator />
     </div>
   );
 };
