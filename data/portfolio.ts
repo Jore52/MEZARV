@@ -11,7 +11,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '1', 
     title: 'Tiempos inconsecuentes', 
-    category: 'Pintura', 
+    category: 'Surrealismo', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/IVDmiK5.png', 
     dimensions: '100x120 cm',
@@ -31,7 +31,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '3', 
     title: 'El Pedestal de una Guerrera Urbana', 
-    category: 'Pintura', 
+    category: 'Surrealismo', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/umtfcOL.jpg', 
     dimensions: '120x150 cm',
@@ -41,7 +41,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '4', 
     title: 'Un tierno Diálogo', 
-    category: 'Abstracto', 
+    category: 'Surrealismo', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/0hbzUOo.png', 
     dimensions: '90x110 cm',
@@ -71,7 +71,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '7', 
     title: 'Cruzando Melodías y Culturas', 
-    category: 'Abstracto', 
+    category: 'Surrealismo', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/e7pedrs.png', 
     dimensions: '150x100 cm',
@@ -81,7 +81,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '8', 
     title: 'Juguemos en el Parque', 
-    category: 'Pintura', 
+    category: 'Abstracto', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/XjONBG2.png', 
     dimensions: '120x120 cm',
@@ -93,7 +93,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '9', 
     title: 'Sin título', 
-    category: 'Pintura', 
+    category: 'Abstracto', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/e6hdcJk.jpg', 
     dimensions: '85 x 65 cm',
@@ -103,7 +103,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '10', 
     title: 'Sin título', 
-    category: 'Pintura', 
+    category: 'Abstracto', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/s6NDt1X.jpg', 
     dimensions: '90 x 70 cm',
@@ -113,7 +113,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '11', 
     title: 'El Embajador Silencioso', 
-    category: 'Surrealismo', 
+    category: 'Pintura', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/kWQAb2f.jpg', 
     dimensions: '100 x 75 cm',
@@ -123,7 +123,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '12', 
     title: 'Sin título', 
-    category: 'Pintura', 
+    category: 'Abstracto', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/2lQgA9u.jpg', 
     dimensions: '100 x 80 cm',
@@ -153,7 +153,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '15', 
     title: 'Dame Luz para este Camino Incierto', 
-    category: 'Abstracto', 
+    category: 'Surrealismo', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/Vl8yH53.jpg', 
     dimensions: 'Consultar',
@@ -172,8 +172,8 @@ export const galleryItems: Artwork[] = [
   },
   { 
     id: '17', 
-    title: 'Sin título (Ref. Surreal)', 
-    category: 'Surrealismo', 
+    title: 'Sin nombre', 
+    category: 'Abstracto', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/H9bT5Ov.jpg', 
     dimensions: 'Consultar',
@@ -183,7 +183,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '18', 
     title: 'Sentimientos Insólitos', 
-    category: 'Pintura', 
+    category: 'Surrealismo', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/kkBydl7.jpg', 
     dimensions: 'Consultar',
@@ -193,7 +193,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '19', 
     title: 'Una Diosa de Luz Afrodescendiente Iluminando Tiempo y Espacio', 
-    category: 'Abstracto', 
+    category: 'Pintura', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/p0kSeKy.jpg', 
     dimensions: 'Consultar',
@@ -234,7 +234,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '23', 
     title: 'Plantado por un Instinto', 
-    category: 'Pintura', 
+    category: 'Surrealismo', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/SF2Y8oQ.jpg', 
     dimensions: 'Consultar',
