@@ -143,7 +143,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '14', 
     title: 'Fragmentos en el Arenal de Pachacamac', 
-    category: 'Pintura', 
+    category: 'Abstracto', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/muYfAnW.jpg', 
     dimensions: '150 x 100 cm',
@@ -254,7 +254,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '25', 
     title: 'Una Libertad Incierta', 
-    category: 'Pintura', 
+    category: 'Abstracto', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/R9RWvXd.jpg', 
     dimensions: 'Consultar',
@@ -264,7 +264,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '26', 
     title: 'Nunca Apagues tu Luz', 
-    category: 'Pintura', 
+    category: 'Abstracto', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/O9y63dB.jpg', 
     dimensions: 'Consultar',
