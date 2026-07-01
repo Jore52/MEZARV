@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Maximize2, Search, ChevronDown } from 'lucide-react';
 import { galleryItems, contactInfo } from '../data/portfolio';
+import { Artwork } from '../types';
 
 // Utility to use Imgur's "Large Thumbnail" (suffix 'l') for grid views to save bandwidth
 // Original: https://i.imgur.com/xyz.jpg -> Optimized: https://i.imgur.com/xyzl.jpg
@@ -13,12 +14,23 @@ const getOptimizedImageUrl = (url: string) => {
   return url.replace(/(\.[^.]+)$/, 'l$1');
 };
 
+// Secciones de la galería en orden de aparición. "Otros" agrupa todo lo que no
+// es Surrealismo ni Abstracto (Pintura, Escultura, Instalación, etc.)
+const GALLERY_SECTIONS: { key: string; title: string; subtitle: string; match: (category: string) => boolean }[] = [
+  { key: 'Surrealismo', title: 'Surrealismo', subtitle: 'El diálogo entre el subconsciente y el lienzo', match: (c) => c === 'Surrealismo' },
+  { key: 'Abstracto', title: 'Abstracto', subtitle: 'Libertad imaginativa de la paleta', match: (c) => c === 'Abstracto' },
+  { key: 'Otros', title: 'Otras Obras', subtitle: 'Pintura y exploraciones diversas', match: (c) => !['Surrealismo', 'Abstracto'].includes(c) },
+];
+
+// Obras que son en realidad una sola imagen dividida: deben mostrarse siempre
+// apiladas verticalmente en este orden exacto y juntas en la misma columna.
+const STACKED_GROUPS: string[][] = [['20', '21', '22']];
+
 const Gallery: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  
+
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   // Lock body scroll when modal is open
@@ -33,30 +45,82 @@ const Gallery: React.FC = () => {
     };
   }, [selectedId]);
 
-  // OPTIMIZATION: Memoize filtered results to prevent re-calculations
-  const filteredArtworks = useMemo(() => {
-    return galleryItems.filter(art => {
-      // 1. Text Search
-      const matchesSearch = art.title.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      // 2. Category Filter
-      let matchesCategory = true;
-      if (selectedCategory !== 'Todas') {
-          if (selectedCategory === 'Otros') {
-              matchesCategory = !['Surrealismo', 'Abstracto'].includes(art.category);
-          } else {
-              matchesCategory = art.category === selectedCategory;
-          }
+  // OPTIMIZATION: Memoize sections to prevent re-calculations.
+  // Agrupamos las obras por categoría respetando el orden de GALLERY_SECTIONS.
+  const sections = useMemo(() => {
+    const query = searchQuery.toLowerCase();
+    // Mapa id -> grupo apilado al que pertenece (para agrupar en una celda).
+    const groupByMember = new Map<string, string[]>();
+    STACKED_GROUPS.forEach(group => group.forEach(id => groupByMember.set(id, group)));
+
+    return GALLERY_SECTIONS.map(section => {
+      const items = galleryItems
+        .filter(art => art.title.toLowerCase().includes(query) && section.match(art.category))
+        .sort((a, b) => sortOrder === 'newest' ? b.year - a.year : a.year - b.year);
+
+      // Convertimos las obras en "celdas": una obra suelta, o un grupo apilado.
+      // El grupo se coloca donde aparece su primer miembro y siempre respeta
+      // el orden fijo definido en STACKED_GROUPS (id 20, luego 21, luego 22).
+      const cells: { key: string; arts: Artwork[] }[] = [];
+      const consumed = new Set<string>();
+      for (const art of items) {
+        if (consumed.has(art.id)) continue;
+        const group = groupByMember.get(art.id);
+        if (group) {
+          const groupArts = group
+            .map(id => items.find(a => a.id === id))
+            .filter((a): a is Artwork => Boolean(a));
+          groupArts.forEach(a => consumed.add(a.id));
+          cells.push({ key: `group-${group.join('-')}`, arts: groupArts });
+        } else {
+          cells.push({ key: art.id, arts: [art] });
+        }
       }
 
-      return matchesSearch && matchesCategory;
-    }).sort((a, b) => {
-      return sortOrder === 'newest' ? b.year - a.year : a.year - b.year;
-    });
-  }, [searchQuery, selectedCategory, sortOrder]);
+      return { ...section, items, cells };
+    }).filter(section => section.items.length > 0);
+  }, [searchQuery, sortOrder]);
 
-  const selectedArtwork = useMemo(() => 
+  const hasResults = sections.length > 0;
+
+  const selectedArtwork = useMemo(() =>
     galleryItems.find(a => a.id === selectedId), [selectedId]
+  );
+
+  // Estilos y contenido de una tarjeta de obra, reutilizados tanto por las
+  // obras sueltas como por las piezas de un grupo apilado.
+  const cardClasses = "relative group cursor-pointer overflow-hidden bg-zinc-800 shadow-xl border border-zinc-800 hover:border-gold/30 transition-colors transform-gpu rounded-sm";
+
+  const renderCardInner = (art: Artwork) => (
+    <div className="relative bg-zinc-800 min-h-[300px]">
+      {/* Placeholder / Skeleton Background */}
+      <div className="absolute inset-0 bg-zinc-800 animate-pulse"></div>
+
+      {/* OPTIMIZED IMAGE: Uses thumbnail in grid */}
+      <img
+        src={getOptimizedImageUrl(art.imageUrl)}
+        alt={art.title}
+        className="w-full h-auto min-h-[300px] object-cover transform transition-transform duration-700 ease-out group-hover:scale-105 relative z-10"
+        loading="lazy"
+        decoding="async"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x500/1a1a1a/333333?text=Mezarv';
+        }}
+      />
+      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-20"></div>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8 z-30">
+        <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+          <span className="text-gold text-[10px] tracking-[0.2em] uppercase mb-2 block">{art.category}</span>
+          <h3 className="text-2xl font-serif text-white mb-2">{art.title}</h3>
+          <div className="h-[1px] w-full bg-gradient-to-r from-gold/50 to-transparent mt-4"></div>
+        </div>
+
+        <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all delay-100 hover:bg-gold hover:text-black hover:scale-110">
+          <Maximize2 size={16} />
+        </div>
+      </div>
+    </div>
   );
 
   return (
@@ -112,73 +176,54 @@ const Gallery: React.FC = () => {
                </div>
             </div>
           </div>
-
-          {/* Category Tabs */}
-          <div className="flex justify-center gap-2 md:gap-4 flex-wrap">
-            {['Todas', 'Surrealismo', 'Abstracto', 'Otros'].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-6 py-2 rounded-full text-xs uppercase tracking-widest transition-all duration-300 border ${
-                  selectedCategory === cat 
-                    ? 'bg-gold text-black border-gold font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]' 
-                    : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-600 hover:text-zinc-300'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-          <AnimatePresence mode='popLayout'>
-            {filteredArtworks.map((art) => (
-              <motion.div
-                key={art.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-                onClick={() => setSelectedId(art.id)}
-                className="break-inside-avoid relative group cursor-pointer overflow-hidden bg-zinc-800 shadow-xl border border-zinc-800 hover:border-gold/30 transition-colors transform-gpu rounded-sm"
-              >
-                <div className="relative bg-zinc-800 min-h-[300px]">
-                  {/* Placeholder / Skeleton Background */}
-                  <div className="absolute inset-0 bg-zinc-800 animate-pulse"></div>
-                  
-                  {/* OPTIMIZED IMAGE: Uses thumbnail in grid */}
-                  <img 
-                    src={getOptimizedImageUrl(art.imageUrl)} 
-                    alt={art.title} 
-                    className="w-full h-auto min-h-[300px] object-cover transform transition-transform duration-700 ease-out group-hover:scale-105 relative z-10"
-                    loading="lazy"
-                    decoding="async"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x500/1a1a1a/333333?text=Mezarv';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-20"></div>
-                
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8 z-30">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                        <span className="text-gold text-[10px] tracking-[0.2em] uppercase mb-2 block">{art.category}</span>
-                        <h3 className="text-2xl font-serif text-white mb-2">{art.title}</h3>
-                        <div className="h-[1px] w-full bg-gradient-to-r from-gold/50 to-transparent mt-4"></div>
-                    </div>
-                    
-                    <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all delay-100 hover:bg-gold hover:text-black hover:scale-110">
-                        <Maximize2 size={16} />
-                    </div>
-                    </div>
+        {/* Gallery Sections: Surrealismo → Abstracto → Otros */}
+        <div className="space-y-20">
+          {sections.map((section) => (
+            <div key={section.key} id={`galeria-${section.key.toLowerCase()}`} className="scroll-mt-24">
+              {/* Section Header */}
+              <div className="mb-8">
+                <div className="flex items-center gap-4">
+                  <h3 className="text-3xl md:text-4xl font-serif text-white">{section.title}</h3>
+                  <span className="h-[1px] flex-1 bg-gradient-to-r from-gold/40 to-transparent"></span>
+                  <span className="text-zinc-600 text-xs uppercase tracking-widest">{section.items.length} obras</span>
                 </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                <p className="text-zinc-500 font-light italic mt-2 text-sm">{section.subtitle}</p>
+              </div>
+
+              {/* Section Grid */}
+              <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                <AnimatePresence mode='popLayout'>
+                  {section.cells.map((cell) => (
+                    <motion.div
+                      key={cell.key}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3, ease: 'easeOut' }}
+                      className="break-inside-avoid space-y-6"
+                    >
+                      {/* Cada celda es una obra suelta o un grupo apilado (una sola
+                          imagen dividida). Se mantiene siempre junta en la columna. */}
+                      {cell.arts.map((art) => (
+                        <div
+                          key={art.id}
+                          onClick={() => setSelectedId(art.id)}
+                          className={cardClasses}
+                        >
+                          {renderCardInner(art)}
+                        </div>
+                      ))}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </div>
+          ))}
         </div>
-        
-        {filteredArtworks.length === 0 && (
+
+        {!hasResults && (
             <div className="text-center py-20 text-zinc-500">
                 <p>No se encontraron obras con los filtros seleccionados.</p>
             </div>

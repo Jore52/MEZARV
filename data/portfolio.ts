@@ -10,11 +10,11 @@ export const galleryItems: Artwork[] = [
   // --- OBRAS EXISTENTES (Actualizadas con campos técnicos) ---
   { 
     id: '1', 
-    title: 'Tiempos inconsecuentes', 
+    title: 'Sentimientos Insólitos', 
     category: 'Surrealismo', 
-    year: 2024, 
-    imageUrl: 'https://i.imgur.com/IVDmiK5.png', 
-    dimensions: '100x120 cm',
+    year: 2023, 
+    imageUrl: 'https://i.imgur.com/kkBydl7.jpg', 
+    dimensions: 'Consultar',
     technique: DEFAULT_TECHNIQUE,
     author: DEFAULT_AUTHOR
   },
@@ -163,7 +163,7 @@ export const galleryItems: Artwork[] = [
   { 
     id: '16', 
     title: 'Una Noche de Pasión en el Parque', 
-    category: 'Pintura', 
+    category: 'Surrealismo', 
     year: 2023, 
     imageUrl: 'https://i.imgur.com/XQVfVyY.jpg', 
     dimensions: 'Consultar',
@@ -182,11 +182,11 @@ export const galleryItems: Artwork[] = [
   },
   { 
     id: '18', 
-    title: 'Sentimientos Insólitos', 
+    title: 'Tiempos inconsecuentes', 
     category: 'Surrealismo', 
-    year: 2023, 
-    imageUrl: 'https://i.imgur.com/kkBydl7.jpg', 
-    dimensions: 'Consultar',
+    year: 2024, 
+    imageUrl: 'https://i.imgur.com/IVDmiK5.png', 
+    dimensions: '100x120 cm',
     technique: DEFAULT_TECHNIQUE,
     author: DEFAULT_AUTHOR
   },
@@ -267,6 +267,16 @@ export const galleryItems: Artwork[] = [
     category: 'Pintura', 
     year: 2024, 
     imageUrl: 'https://i.imgur.com/O9y63dB.jpg', 
+    dimensions: 'Consultar',
+    technique: DEFAULT_TECHNIQUE,
+    author: DEFAULT_AUTHOR
+  },
+    { 
+    id: '27', 
+    title: 'El Chalán', 
+    category: 'Pintura', 
+    year: 2024, 
+    imageUrl: 'https://i.imgur.com/MUbQ9Dq.jpg', 
     dimensions: 'Consultar',
     technique: DEFAULT_TECHNIQUE,
     author: DEFAULT_AUTHOR
