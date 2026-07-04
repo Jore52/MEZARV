@@ -31,7 +31,8 @@ const Gallery: React.FC = () => {
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+  // Por defecto 'oldest' = orden ascendente por id (orden del archivo portfolio.ts).
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('oldest');
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -56,7 +57,13 @@ const Gallery: React.FC = () => {
     return GALLERY_SECTIONS.map(section => {
       const items = galleryItems
         .filter(art => art.title.toLowerCase().includes(query) && section.match(art.category))
-        .sort((a, b) => sortOrder === 'newest' ? b.year - a.year : a.year - b.year);
+        // Ordenamos por el id numérico definido en data/portfolio.ts.
+        // 'oldest' = ascendente (orden del archivo: 1, 2, 3 …); 'newest' = descendente.
+        .sort((a, b) => {
+          const idA = parseInt(a.id, 10);
+          const idB = parseInt(b.id, 10);
+          return sortOrder === 'newest' ? idB - idA : idA - idB;
+        });
 
       // Convertimos las obras en "celdas": una obra suelta, o un grupo apilado.
       // El grupo se coloca donde aparece su primer miembro y siempre respeta
